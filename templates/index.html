@@ -1,0 +1,69 @@
+{% extends 'base.html'%}
+{%block content%}
+{% load cart%}
+<!--body-->
+  <div class="changelist-fluid mt-3">
+
+  <div class="row">
+    <!--filter-->
+    <div class="col-lg-3 mx-auto">
+
+      <div class="list-group">
+        {%for i in categories%}
+
+        <a href="#" class="list-group-item list-group-item-action">{{i.name}}</a>
+        {%endfor%}
+
+      </div>
+
+
+    </div>
+
+<!--product-->
+    <div id="product" class="col-lg-9 mx-auto">
+      <div class="row mx-auto">
+        {% for product in products%}
+  <div class="card mx-auto mb-3" style=" width: 18rem;">
+  <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+    <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text"><b>{{product.price}}</b></p>
+
+    </div>
+    <div>
+
+      <div class="card-footer p-0 no-gutters">
+        {%if product|is_in_cart:request.session.cart%}
+        <div class="row no-gutters">
+          <form class="col-2 " method="post" action="/">
+          {% csrf_token %}
+          <input hidden type="text" value="{{product.id}}" name="product">
+            <input hidden type="text" value="True" name="remove">
+          <input type="submit" value="-" class="btn btn-block btn-light">
+        </form>
+        <div class="text-center col">{{product|cart_quantity:request.session.cart}}in cart</div>
+        <form class="col-2 " method="post" action="/">
+          {% csrf_token %}
+          <input hidden type="text" value="{{product.id}}" name="product">
+          <input type="submit" value="+" class="btn btn-block btn-light">
+        </form>
+        </div>
+        {%else%}
+        <form action="/" method="post" class="btn-block">
+      {% csrf_token %}
+      <input hidden type="text" value="{{product.id}}" name="product">
+      <input type="submit" value="ADD to CART" name="cart" class="float-right btn btn-light border form-control" >
+        </form>
+        {%endif%}
+
+
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+      </div>
+
+    </div>
+  </div>
+  </div>
+{%endblock%}

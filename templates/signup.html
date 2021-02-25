@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="container">
+    <div class="p-4 m-4">
+        <div class="col-lg-5 mx-auto table-bordered rounded pt-4">
+            <h3 class=" alert alert-light border rounded mx-auto" >Create an Account</h3>
+            <form action="{%url 'signup'%}" method="POST">
+                {% csrf_token %}
+                {%if error%}
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+                {%endif%}
+
+                 <div class="form-group">
+                     <label for="">First Name</label>
+                     <input type="text" class="form-control" id="" aria-describedby="emailHelp" name="first_name" placeholder="Enter First Name" value="{{value.fn}}">
+                 </div>
+                <div class="form-group">
+                     <label for="">Last Name</label>
+                     <input type="text" class="form-control" id="" aria-describedby="emailHelp" name="last_name" placeholder="Enter Last Name" value="{{value.ln}}">
+                </div>
+                <div class="form-group">
+                     <label for="">Phone</label>
+                     <input type="text" class="form-control" id="" aria-describedby="emailHelp" name="phone" placeholder="+008" value="{{value.phn}}">
+                </div>
+                <div class="form-group">
+                     <label for="">Email address</label>
+                     <input type="email" class="form-control" id="" aria-describedby="emailHelp" name="email" placeholder="Enter email" value="{{value.email}}">
+                 </div>
+                <div class="form-group">
+                     <label for="">Password</label>
+                     <input type="password" class="form-control" id="" name="password" aria-describedby="emailHelp" placeholder="*******">
+                 </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-sm" value="SignUp">
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{%endblock%}

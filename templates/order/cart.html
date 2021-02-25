@@ -1,0 +1,88 @@
+
+{% extends 'base.html'%}
+{%load cart%}
+{% block content%}
+<div class="container ">
+    <h1 class="">Cart Product</h1>
+    <table class="table ">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Sl</th>
+        <th scope="col">Image</th>
+      <th scope="col">Product</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {%for product in product%}
+
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+        <td><img src="{{product.image.url}}" style="height: 80px" width="80px"></td>
+        <td>{{product.name}}</td>
+        <td>{{product.price|currency}}</td>
+        {%if request.session.cart%}
+        <td>{{product | cart_quantity:request.session.cart}}</td>
+        <td>{{product|price_total:request.session.cart|currency}}</td>
+        {% endif %}
+    </tr>
+
+{%endfor%}
+
+    <tfoot>
+    <tr>
+        <th colspan="4" class="text-center">
+            Total
+        </th>
+        {%if request.session.cart%}
+        <th>
+
+            {{product|total_price:request.session.cart|currency}}
+        </th>
+        {%endif%}
+    </tr>
+    </tfoot>
+
+
+  </tbody>
+</table>
+    <div class="m-3 p-3">
+        <a href="#" class="btn btn-outline-info border rounded col-lg-3 float-right" data-toggle="modal" data-target="#exampleModal">Check Out</a>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="m-2 p-3">
+<form method="POST" action="/checkout">
+    {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleInputEmail1">Address</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="address" placeholder="address">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Phone</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="+008" name="phone">
+  </div>
+
+  <button type="submit" class="btn btn-primary float-right">Submit</button>
+</form>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+{% endblock %}
